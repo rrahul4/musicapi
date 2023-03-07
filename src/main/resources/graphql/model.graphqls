@@ -1,0 +1,26 @@
+type Query {
+
+ songs: [Song]
+ songById(id: ID): Song
+
+}
+
+
+type Song{
+
+ id: ID
+ name: String	
+ duration: Float
+ likes: Int
+ artist: [Artist]
+
+}
+
+type Artist{
+
+ id: ID
+ name: String
+ age: Int
+ song: [Song]
+
+}
