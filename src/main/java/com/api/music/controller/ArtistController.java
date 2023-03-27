@@ -1,8 +1,10 @@
 package com.api.music.controller;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +26,8 @@ public class ArtistController implements BaseController<Artist> {
 	
 	
 	@GetMapping("/getAll")
-	public Set<Artist> getAll() {
-		return artistService.getAll();
+	public ResponseEntity<Collection<Artist>> getAll(@RequestParam int pageno) {
+		return ResponseEntity.ok(artistService.getAll(pageno).toList());
 	}
 
 	@GetMapping("/getById")
@@ -39,10 +41,10 @@ public class ArtistController implements BaseController<Artist> {
 	}
 
 	@PostMapping("/getAllByIds")
-	public Set<Artist> getAllByIdList(@RequestBody Set<Long> ids) {
+	public ResponseEntity<Collection<Artist>> getAllByIdList(@RequestBody Set<Long> ids) {
 		Set<Long> artists = new HashSet<Long>();
 		artists.addAll(ids);
-		return artistService.getByIds(artists);
+		return ResponseEntity.ok(artistService.getByIds(artists));
 	}
 
 	@PostMapping("/create")

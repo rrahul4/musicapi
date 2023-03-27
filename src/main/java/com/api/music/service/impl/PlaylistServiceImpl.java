@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,8 +24,9 @@ public class PlaylistServiceImpl implements BaseService<Playlist>{
 	
 	
 	@Override
-	public Set<Playlist> getAll() {
-		return new HashSet<Playlist>(repo.findAll());
+	public Page<Playlist> getAll(int pageno) {
+		PageRequest request = PageRequest.of(pageno,20);
+		return repo.findAll(request);
 	}
 
 	@Override

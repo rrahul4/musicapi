@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +35,14 @@ public class PlayListUpdate {
 	public void updateTrendingSongsPlaylist() {
 		
 		System.out.println("running update trending playlist job");
-		Set<Song> trendingSongs = songService.getTrendingSongs(20);
 		
+		PageRequest request = PageRequest.of(1, 20, Sort.by(Sort.Direction.DESC, "year", "played"));
 		
+		Set<Song> trendingSongs = songService.getAll(request).toSet();
+		
+		for(Song s : trendingSongs) {
+			System.out.println(s.toString());
+		}
 		
 		long user_id = userServiceImpl.getUserIdByUsername("dhunnn");
 		
@@ -53,11 +60,12 @@ public class PlayListUpdate {
 		playlistService.update(p);
 	}
 	
+	/*
 	@Scheduled(cron = "${interval-in-cron}")
 	public void updateLatestSongsPlaylist() {
 		
 		System.out.println("running update latest playlist job");
-		Set<Song> latestSongs = songService.getlatestSongs(20);
+		Set<Song> latestSongs = songService.getlatestSongs(20).toSet();
 		
 		long user_id = userServiceImpl.getUserIdByUsername("dhunnn");
 		
@@ -65,18 +73,28 @@ public class PlayListUpdate {
 		
 		System.out.println(latestSongs.size());
 		
-		latestSongs.addAll(p.getSongs());
-		p.setSongs(latestSongs);
+		if(!latestSongs.equals(p.getSongs())) {
+			latestSongs.addAll(p.getSongs());
+			p.setSongs(latestSongs);
 		
-		playlistService.update(p);
-	}
+			playlistService.update(p);
+		}
+	}*/
 	
 	@Scheduled(cron = "${interval-in-cron}")
 	public void updateNewSongsPlaylist() {
 		
 		System.out.println("running update latest playlist job");
 		int year = LocalDateTime.now().getYear();
-		Set<Song> newsongs = songService.getNewSongs(year);
+		
+		
+		PageRequest request = PageRequest.of(1, 20, Sort.by(Sort.Direction.DESC, "year"));
+	
+		Set<Song> newsongs = songService.getAll(request).toSet();
+		
+		for(Song s : newsongs) {
+			System.out.println(s.toString());
+		}
 		
 		long user_id = userServiceImpl.getUserIdByUsername("dhunnn");
 		
@@ -84,10 +102,10 @@ public class PlayListUpdate {
 		
 		System.out.println(newsongs.size());
 		
-		newsongs.equals(p.getSongs());
-		p.setSongs(newsongs);
-		
-		playlistService.update(p);
+		if(!newsongs.equals(p.getSongs())){
+			p.setSongs(newsongs);
+			playlistService.update(p);
+		}
 	}
 	
 }

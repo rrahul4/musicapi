@@ -1,7 +1,9 @@
 package com.api.music.controller;
 
+import java.util.Collection;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +24,8 @@ public class GenreController{
 	GenreServiceImpl genreService;
 	
 	@GetMapping("/getAll")
-	public Set<Genre> getAll() {
-		return genreService.getAll();
+	public ResponseEntity<Collection<Genre>> getAll(@RequestParam int pageno) {
+		return ResponseEntity.ok(genreService.getAll(pageno).toList());
 	}
 
 	@GetMapping("/getById")

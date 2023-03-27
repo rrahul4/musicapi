@@ -1,9 +1,12 @@
 package com.api.music.service.impl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.api.music.model.Album;
@@ -20,14 +23,15 @@ public class AlbumServiceImpl implements BaseService<Album>{
 	@Autowired
 	SongServiceImpl songService;
 	
-	public Album getByName(String name) {
+	public List<Album> getByName(String name){
 		System.out.println(name);
 		return repo.findByName(name);
 	}
 	
 	@Override
-	public Set<Album> getAll() {
-		return new HashSet<Album>(repo.findAll());
+	public Page<Album> getAll(int pageno) {
+		PageRequest request = PageRequest.of(pageno,20);
+		return repo.findAll(request);
 	}
 
 	@Override

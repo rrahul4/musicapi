@@ -1,7 +1,10 @@
 package com.api.music.controller;
 
+import java.util.Collection;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +32,8 @@ public class PlaylistController implements BaseController<Playlist> {
 	private UserServiceImpl userService;
 	
 	@GetMapping("/getAll")
-	public Set<Playlist> getAll() {
-		return service.getAll();
+	public ResponseEntity<Collection<Playlist>> getAll(@RequestParam int pageno) {
+		return ResponseEntity.ok(service.getAll(pageno).toList());
 	}
 
 	@GetMapping("/getById")
@@ -39,8 +42,8 @@ public class PlaylistController implements BaseController<Playlist> {
 	}
 
 	@PostMapping("/getAllByIds")
-	public Set<Playlist> getAllByIdList(@RequestBody Set<Long> ids) {
-		return service.getByIds(ids);
+	public ResponseEntity<Collection<Playlist>> getAllByIdList(@RequestBody Set<Long> ids) {
+		return ResponseEntity.ok(service.getByIds(ids));
 	}
 
 	@PostMapping("/create")

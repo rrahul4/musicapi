@@ -1,8 +1,12 @@
 package com.api.music.controller;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +28,9 @@ public class AlbumController implements BaseController<Album> {
 	AlbumServiceImpl service;
 	
 	@GetMapping("/getAll")
-	public Set<Album> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<Collection<Album>> getAll(@RequestParam int pageno) {
+		Page<Album> page = service.getAll(pageno);
+		return ResponseEntity.ok(page.toList());
 	}
 
 	@GetMapping("/getById")
@@ -35,17 +39,17 @@ public class AlbumController implements BaseController<Album> {
 	}
 	
 	@GetMapping("/getByName")
-	public Album getByName(@RequestParam String name) {
+	public List<Album> getByName(@RequestParam String name) {
 		return service.getByName(name);
 	}
 
 	@GetMapping("/getAllById")
-	public Set<Album> getAllByIdList(@RequestParam Set<Long> ids) {
+	public ResponseEntity<Collection<Album>> getAllByIdList(@RequestParam Set<Long> ids) {
 		Set<Long> abms = new HashSet<Long>();
 		for(long i : ids) {
 			abms.add(i);
 		}
-		return service.getByIds(abms);
+		return ResponseEntity.ok(service.getByIds(abms));
 	}
 	
 	
@@ -71,5 +75,4 @@ public class AlbumController implements BaseController<Album> {
 	public void delete(@RequestParam Long id) {
 		service.delete(id);
 	}
-
 }

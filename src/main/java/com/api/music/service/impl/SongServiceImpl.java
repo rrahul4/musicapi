@@ -5,6 +5,9 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.api.music.model.Artist;
@@ -34,9 +37,15 @@ public class SongServiceImpl implements BaseService<Song> {
 	private MusicianServiceImpl musicianService;
 	
 	@Override
-	public Set<Song> getAll() {
-		return new HashSet<Song>(songRepository.findAll());
+	public Page<Song> getAll(int pageno) {
+		PageRequest request = PageRequest.of(pageno,20);
+		return songRepository.findAll(request);
 	}
+	
+	public Page<Song> getAll(PageRequest request) {
+		return songRepository.findAll(request);
+	}
+	
 
 	@Override
 	public Song getById(long id) {
@@ -182,29 +191,25 @@ public class SongServiceImpl implements BaseService<Song> {
 		return songRepository.save(song);
 	}
 	
-	public Set<Song> getTrendingSongs(long pagesize){
+	public Page<Song> getTrendingSongs(int pageno){
+		PageRequest request = PageRequest.of(pageno,20);
 		
-		Pageable p = new Pageable();
-		p.setDefaultPageSize((int) pagesize);
-		p.setMaxPageSize(20);
-		
-		return songRepository.getTrendingSongs(p);
+		return songRepository.getTrendingSongs(request);
 	}
 	
-	public Set<Song> getOldTrendingSongs(){
-		return songRepository.getTrendingOldSongs(new Pageable());
+	public Page<Song> getOldTrendingSongs(int pageno){
+		PageRequest request = PageRequest.of(pageno,20);
+		return songRepository.getTrendingOldSongs(request);
 	}
 	
-	public Set<Song> getlatestSongs(long pagesize){
+	public Page<Song> getlatestSongs(int pageno){
 		
-		Pageable p = new Pageable();
-		p.setDefaultPageSize((int) pagesize);
-		p.setMaxPageSize(20);
-		
-		return songRepository.getLatestSongs(p);
+		PageRequest request = PageRequest.of(pageno,20, Sort.by(Sort.Direction.DESC, "year", "played"));
+		return songRepository.findAll(request);
 	}
 	
-	public Set<Song> getNewSongs(int year){
-		return songRepository.getNewSongs(year, new Pageable());
+	public Page<Song> getNewSongs(int year, int pageno){
+		PageRequest request = PageRequest.of(pageno,20);
+		return songRepository.getNewSongs(year, request);
 	}
 }

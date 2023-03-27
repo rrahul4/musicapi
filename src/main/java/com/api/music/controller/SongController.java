@@ -1,10 +1,12 @@
 package com.api.music.controller;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +27,8 @@ public class SongController implements BaseController<Song> {
 	SongServiceImpl songService;
 	
 	@GetMapping("/getAll")
-	public Set<Song> getAll() {
-		return songService.getAll();
+	public ResponseEntity<Collection<Song>> getAll(@RequestParam int pageno) {
+		return ResponseEntity.ok(songService.getAll(pageno).toList());
 	}
 	
 
@@ -41,16 +43,16 @@ public class SongController implements BaseController<Song> {
 	}
 	
 	@GetMapping("/getNewSongs")
-	public Set<Song> getNewSongs(){
+	public ResponseEntity<Collection<Song>> getNewSongs(@RequestParam int pageno){
 		int year = LocalDateTime.now().getYear();
-		return songService.getNewSongs(year);
+		return ResponseEntity.ok(songService.getNewSongs(year, pageno).toList());
 	}
 
 	@PostMapping("/getAllByIds")
-	public Set<Song> getAllByIdList(@RequestBody Set<Long> ids) {
+	public ResponseEntity<Collection<Song>> getAllByIdList(@RequestBody Set<Long> ids) {
 		Set<Long> songids = new HashSet<Long>();
 		songids.addAll(ids);
-		return songService.getByIds(songids);
+		return ResponseEntity.ok(songService.getByIds(songids));
 	}
 
 	@PostMapping("/create")

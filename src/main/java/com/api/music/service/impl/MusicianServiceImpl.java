@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.api.music.model.Musician;
@@ -19,8 +21,9 @@ public class MusicianServiceImpl implements BaseService<Musician> {
 	
 	
 	@Override
-	public Set<Musician> getAll() {
-		return new HashSet<Musician>(musicianRepository.findAll());
+	public Page<Musician> getAll(int pageno) {
+		PageRequest request = PageRequest.of(pageno,20);
+		return musicianRepository.findAll(request);
 	}
 
 	@Override
