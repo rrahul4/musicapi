@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.cache.annotation.Cacheable;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
+@Cacheable
 @Table(name="Album", uniqueConstraints = {
 		@UniqueConstraint(columnNames = {"id","id"}),
 		@UniqueConstraint(columnNames = {"name", "name"})
