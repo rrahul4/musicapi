@@ -47,6 +47,12 @@ public class SongController implements BaseController<Song> {
 		int year = LocalDateTime.now().getYear();
 		return ResponseEntity.ok(songService.getNewSongs(year, pageno).toList());
 	}
+	
+	@GetMapping("/getOldSongs")
+	public ResponseEntity<Collection<Song>> getOldSongs(@RequestParam int pageno){
+		int year = LocalDateTime.now().getYear();
+		return ResponseEntity.ok(songService.getOldTrendingSongs(pageno).toList());
+	}
 
 	@PostMapping("/getAllByIds")
 	public ResponseEntity<Collection<Song>> getAllByIdList(@RequestBody Set<Long> ids) {

@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.api.music.MusicapiApplicationTests
--------------------------------------------------------------------------------
-<<<<<<< HEAD
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.476 s - in com.api.music.MusicapiApplicationTests
-=======
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.471 s - in com.api.music.MusicapiApplicationTests
->>>>>>> f1e772afed1422766245331bec5c942d616df702

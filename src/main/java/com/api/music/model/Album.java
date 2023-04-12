@@ -34,6 +34,7 @@ public class Album {
 
 	private String name;
 	
+	private String imgurl;
 
 	@OneToMany(targetEntity=Song.class, mappedBy="album",cascade= {CascadeType.MERGE} , fetch = FetchType.LAZY) 
 	private Set<Song> songs = new HashSet<Song>();
@@ -75,6 +76,14 @@ public class Album {
 	
 	public String toString() {
 		return "id = " + getId() + ", name = " + getName();
+	}
+
+	public String getImgurl() {
+		return imgurl;
+	}
+
+	public void setImgurl(String imgurl) {
+		this.imgurl = imgurl;
 	}
 	
 }
